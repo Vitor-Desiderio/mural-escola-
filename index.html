@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mural Oficial da Escola</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #0f172a;
+            color: #e5e7eb;
+        }
+
+        header {
+            background: #020617;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 28px;
+            border-bottom: 2px solid #1e293b;
+        }
+
+        .login {
+            text-align: center;
+            margin: 20px;
+        }
+
+        input,
+        textarea {
+            padding: 10px;
+            margin: 5px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: white;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .postar {
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .mural {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .aviso {
+            background: #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .aviso img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .aviso .conteudo {
+            padding: 12px;
+        }
+
+        .data {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        🌙 Mural Oficial da Escola
+    </header>
+
+    <div class="login">
+        <h3>Área da Diretoria</h3>
+        <input type="password" id="senha" placeholder="Senha da diretoria">
+        <button onclick="login()">Entrar</button>
+    </div>
+
+    <div class="container">
+
+        <div class="postar" id="postar">
+            <h3>Novo Aviso</h3>
+
+            <input type="text" id="titulo" placeholder="Título do aviso"><br>
+            <input type="date" id="data"><br>
+            <input type="file" id="foto"><br><br>
+            <textarea id="texto" placeholder="Digite o aviso"></textarea><br>
+
+            <button onclick="publicar()">Publicar Aviso</button>
+        </div>
+
+        <h2>📢 Avisos da Escola</h2>
+
+        <div class="mural" id="mural"></div>
+
+    </div>
+
+    <script>
+
+        function login() {
+            let senha = document.getElementById("senha").value;
+
+            if (senha === "diretoria123") {
+                document.getElementById("postar").style.display = "block";
+                alert("Acesso liberado para diretoria");
+            } else {
+                alert("Senha incorreta");
+            }
+        }
+
+        function publicar() {
+
+            let titulo = document.getElementById("titulo").value;
+            let texto = document.getElementById("texto").value;
+            let data = document.getElementById("data").value;
+            let foto = document.getElementById("foto").files[0];
+
+            let aviso = document.createElement("div");
+            aviso.className = "aviso";
+
+            if (foto) {
+
+                let leitor = new FileReader();
+
+                leitor.onload = function (e) {
+
+                    aviso.innerHTML = `
+<img src="${e.target.result}">
+<div class="conteudo">
+<h3>${titulo}</h3>
+<p class="data">📅 ${data}</p>
+<p>${texto}</p>
+</div>
+`;
+
+                    document.getElementById("mural").prepend(aviso);
+
+                }
+
+                leitor.readAsDataURL(foto);
+
+            } else {
+
+                aviso.innerHTML = `
+<div class="conteudo">
+<h3>${titulo}</h3>
+<p class="data">📅 ${data}</p>
+<p>${texto}</p>
+</div>
+`;
+
+                document.getElementById("mural").prepend(aviso);
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
